@@ -1,9 +1,8 @@
 const redux = require("redux");
-const axios  = require('axios')
+const axios = require("axios");
 const createStore = redux.createStore;
-const thunkMiddleWare =require('redux-thunk').default
+const thunkMiddleWare = require("redux-thunk").default;
 const applyMiddleWare = redux.applyMiddleware;
-
 
 // step 1 creating a state
 const initialState = {
@@ -53,35 +52,52 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        users: action.payload
+        users: action.payload,
       };
     case FETCH_USER_ERROR:
       return {
         ...state,
         loading: false,
-        users:[],
-        error:error.payload
+        users: [],
+        error: error.payload,
       };
   }
 };
 
-const store = createStore(reducer,applyMiddleWare(thunkMiddleWare));
+const store = createStore(reducer, applyMiddleWare(thunkMiddleWare));
 
 // api implementation
 
-const fetchUsers  =()=>{
-    return function(dispatch){
-        dispatch(fetchRequested())
-        axios.get('https://jsonplaceholder.typicode.com/users').then((response)=>{
-            const users = response.data.map((person)=>person.name)
-            // console.log(response)
-            dispatch(fetchSuccessed(users))    
-        }).catch((error)=>{
-            dispatch(fetchError(error.message))
-        })
-    }
-}
+// const fetchUsers  =()=>{
+//     return function(dispatch){
+//         dispatch(fetchRequested())
+//         axios.get('https://jsonplaceholder.typicode.com/users').then((response)=>{
+//             const users = response.data.map((person)=>person.name)
+//             // console.log(response)
+//             dispatch(fetchSuccessed(users))
+//         }).catch((error)=>{
+//             dispatch(fetchError(error.message))
+//         })
+//     }
+// }
 
+// again write fetchUsers for practice
+const fetchUsers = () => {
+  return function (dispatch) {
+    dispatch(fetchRequested());
+    axios
+      .get("https://jsonplaceholder.typicode.com/users")
+      .then((response) => {
+        const users = response.data.map((person) => person.name);
+        dispatch(fetchSuccessed(users));
+      })
+      .catch((error) => {
+        dispatch(fetchError(error.message));
+      });
+  };
+};
 
-store.subscribe(()=>{console.log(store.getState())})
-store.dispatch(fetchUsers())
+store.subscribe(() => {
+  console.log(store.getState());
+});
+store.dispatch(fetchUsers());

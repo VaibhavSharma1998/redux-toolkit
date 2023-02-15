@@ -13,7 +13,8 @@ const cakeSlice = createSlice({
         },
         reStocked:(state,action)=>{
             state.NumberOfCakes += action.payload
-        }
+        },
+        
     }
 }) 
 
