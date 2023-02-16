@@ -59,7 +59,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         loading: false,
         users: [],
-        error: error.payload,
+        error: action.payload,
       };
   }
 };
